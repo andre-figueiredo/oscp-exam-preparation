@@ -363,7 +363,7 @@
 * ColdFusion attack: https://chennylmf.medium.com/hackthebox-walkthrough-arctic-e0ae709fc121
 * Ethernal Blue: https://redteamzone.com/EternalBlue/
 * Webmin: https://netosec.com/pwnos-vulnhub-walkthrough/
-* https://dominicbreuker.com/post/htb_dropzone/ (see Public 111)
+* TFTP: https://dominicbreuker.com/post/htb_dropzone/ (see Public 111)
 * SQLi Payloads:
     * Commands to test: http://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet
     * MS SQL Client on Kali: https://rioasmara.com/2020/01/31/mssql-rce-and-reverse-shell-xp_cmdshell/
