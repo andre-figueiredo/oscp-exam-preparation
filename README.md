@@ -7,6 +7,7 @@
         <li><a href="#after-first-shell">After first shell</a></li>
         <li><a href="#general">General</a></li>
         <li><a href="#privilege-escalation">Privilege escalation</a></li>
+        <li><a href="#buffer-overflow-machine">Buffer Overflow Machine</a></li>
         <li><a href="#references">References</a></li>
    </ol>
 </details>
