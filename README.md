@@ -69,6 +69,36 @@
         sudo mount -t cifs //<IP>/wwwroot <FOLDER_IN_MY_MACHINE> -o user=guest
         ```
 
+* More about SMB Shares (**see machines PUBLIC 115 - metasploit `trans2open` and PUBLIC 136 - metasploit `samba_symlink_transversal`**):
+
+    * To check users on the target:
+    ```
+    enum4linux -U <TARGET>
+    ```
+
+    * To check SMB shares:
+    ```
+    enum4linux -S <TARGET>
+    ```
+
+    * To check password policies:
+    ```
+    enum4linux -P <TARGET>
+    ```
+
+    * To check operation system information:
+    ```
+    enum4linux -o <TARGET>
+    ```
+
+    * More (important vulns):
+    ```
+    https://null-byte.wonderhowto.com/how-to/enumerate-smb-with-enum4linux-smbclient-0198049/
+
+    https://null-byte.wonderhowto.com/how-to/get-root-filesystem-access-via-samba-symlink-traversal-0198509/
+    ```
+
+
 * List nmap script (search example):
 
    ``` 
